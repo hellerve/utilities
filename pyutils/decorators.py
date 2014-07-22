@@ -1,5 +1,6 @@
 from functools import wraps, partial
 
+@decordecor
 def cache(func):
     """
     Decorator that implements a caching mechanism
@@ -41,6 +42,7 @@ def redirect_stdout(fileobj):
     finally:
         sys.stdout = oldstdout
 
+@decordecor
 def output_name(func=None, prefix=''):
     """
     Decorator that prints the function name
@@ -55,6 +57,7 @@ def output_name(func=None, prefix=''):
         return func(*args, **kwargs)
     return wrapper
 
+@decordecor
 def decorate_class(cls=None, func=output_name, args):
     """
     Decorater that decorates all the instance
@@ -80,3 +83,25 @@ class debugmeta(type):
         return clsobj
 
 
+def decordecor(decorator):
+    """
+    Decorator that can be used to turn simple functions
+    into well-behaved decorators as long as the decorators
+    are fairly simple. If a decorator expects a function and
+    returns a function (no descriptors), and if it doesn't
+    modify function attributes or docstring, then it is
+    eligible to use this. Simply apply @decordecor to
+    your decorator and it will automatically preserve the
+    docstring and function attributes of functions to which
+    it is applied.
+    """
+    def new_decorator(f):
+        g = decorator(f)
+        g.__name__ = f.__name__
+        g.__doc__ = f.__doc__
+        g.__dict__.update(f.__dict__)
+        return g
+    new_decorator.__name__ = decorator.__name__
+    new_decorator.__doc__ = decorator.__doc__
+    new_decorator.__dict__.update(decorator.__dict__)
+    return new_decorator
