@@ -1,4 +1,4 @@
-utiltiess
+utilties
 ======
 
 This repository contains various Javascript utilities, mostly from the 

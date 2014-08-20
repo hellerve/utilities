@@ -1,4 +1,29 @@
+from datetime import datetime
 from functools import wraps, partial
+from contextlib import contextmanager
+
+def decordecor(decorator):
+    """
+    Decorator that can be used to turn simple functions
+    into well-behaved decorators as long as the decorators
+    are fairly simple. If a decorator expects a function and
+    returns a function (no descriptors), and if it doesn't
+    modify function attributes or docstring, then it is
+    eligible to use this. Simply apply @decordecor to
+    your decorator and it will automatically preserve the
+    docstring and function attributes of functions to which
+    it is applied.
+    """
+    def new_decorator(f):
+        g = decorator(f)
+        g.__name__ = f.__name__
+        g.__doc__ = f.__doc__
+        g.__dict__.update(f.__dict__)
+        return g
+    new_decorator.__name__ = decorator.__name__
+    new_decorator.__doc__ = decorator.__doc__
+    new_decorator.__dict__.update(decorator.__dict__)
+    return new_decorator
 
 @decordecor
 def cache(func):
@@ -58,7 +83,17 @@ def output_name(func=None, prefix=''):
     return wrapper
 
 @decordecor
-def decorate_class(cls=None, func=output_name, args):
+def timefun(func):
+    @wraps(func)
+    def new_func(*args, **kwargs):
+        before = datetime.utcnow()
+        func(*args, **kwargs)
+        after = datetime.utcnow()
+        print("{0} function took {1} seconds.".format(func, after - before))
+    return new_func
+
+@decordecor
+def decorate_class(cls=None, func=output_name, args=None):
     """
     Decorater that decorates all the instance
     methods of a class with a specified function.
@@ -79,29 +114,7 @@ class debugmeta(type):
     """
     def __new__(cls, clsname, bases, clsdict):
         clsobj = super().__new__(cls, clsname, bases, clsdict)
-        clsobj = decorate_cls(clsobj, func=output_name, clsname.join(": "))
+        clsobj = decorate_cls(clsobj, func=output_name, args=clsname.join(": "))
         return clsobj
 
 
-def decordecor(decorator):
-    """
-    Decorator that can be used to turn simple functions
-    into well-behaved decorators as long as the decorators
-    are fairly simple. If a decorator expects a function and
-    returns a function (no descriptors), and if it doesn't
-    modify function attributes or docstring, then it is
-    eligible to use this. Simply apply @decordecor to
-    your decorator and it will automatically preserve the
-    docstring and function attributes of functions to which
-    it is applied.
-    """
-    def new_decorator(f):
-        g = decorator(f)
-        g.__name__ = f.__name__
-        g.__doc__ = f.__doc__
-        g.__dict__.update(f.__dict__)
-        return g
-    new_decorator.__name__ = decorator.__name__
-    new_decorator.__doc__ = decorator.__doc__
-    new_decorator.__dict__.update(decorator.__dict__)
-    return new_decorator

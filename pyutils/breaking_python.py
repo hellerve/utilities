@@ -187,3 +187,5 @@ class Field(metaclass=FieldMeta):
     You can even structure you code as XML and import it like python.
     """
     _fields = []
+
+_install_importer()
