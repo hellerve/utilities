@@ -35,7 +35,7 @@ def cache(func):
     @wraps(func)
     def wrapper(*args):
         if args in saved:
-            return wrapper(*args)
+            return saved[args]
         result = func(*args)
         saved[args] = result
         return result
