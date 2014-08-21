@@ -1,5 +1,4 @@
 #undef NDEBUG
-#include <stdint.h>
 #include <hashmap.h>
 #include <../BStringLibrary/bstrlib.h>
 #include <Debug/debugheader.h>
@@ -32,8 +31,8 @@ static uint32_t default_hash(void *a){
 	return hash;
 }
 
-Hashmap *HMcreate(HMcompare compare, HMhash hash){
-	Hashmap *map = calloc(1, sizeof(Hashmap));
+hashmap *hm_create(hm_compare compare, hm_hash hash){
+	hashmap *map = calloc(1, sizeof(hashmap));
 	check_mem(map);
 
 	map->compare = (compare == NULL ? default_compare : compare);
@@ -46,12 +45,12 @@ Hashmap *HMcreate(HMcompare compare, HMhash hash){
 
 error:
 	if(map)
-		HMdestroy(map);
+		hm_destroy(map);
 
 	return NULL;
 }
 
-void HMdestroy(Hashmap *map){
+void hm_destroy(hashmap *map){
 	int i, j;
 
 	if(map){

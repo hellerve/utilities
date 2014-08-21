@@ -5,31 +5,31 @@
 
 #define DEFAULT_SLOT_NUM 100
 
-typedef int (*HMcompare)(void *firstmap, void *secondmap);
-typedef uint32_t (*HMhash)(void *key);
+typedef int (*hm_compare)(void *firstmap, void *secondmap);
+typedef uint32_t (*hm_hash)(void *key);
 
-typedef struct Hashmap{
+typedef struct hashmap{
 	DynArray *slots;
-	HMcompare compare;
-	HMhash hash;
-} Hashmap;
+	hm_compare compare;
+	hm_hash hash;
+} hashmap;
 
-typedef struct HashmapNode{
+typedef struct node{
 	void *key;
 	void *data
 	uint32_t hash;
-} HashmapNode;
+} node;
 
-typedef int (*HMtraverseCB)(HashmapNode *node);
+typedef int (*hm_traverseCB)(node *nod);
 
-Hashmap *HMcreate(HMcompare compare, HMhash);
-void HMdestroy(Hashmap *map);
+hashmap *hm_create(hm_compare compare, hm_hash);
+void hm_destroy(hashmap *map);
 
-int HMset(Hashmap *map, void *key, void *data);
-void *HMget(Hashmap *map, void *key);
+int hm_set(hashmap *map, void *key, void *data);
+void *hm_get(hashmap *map, void *key);
 
-int HMtraverse(Hashmap *map, HMtraverseCB traverseCB);
+int hm_traverse(hashmap *map, hm_traverseCB traverseCB);
 
-void *HM_delete(Hashmap *map, void *key);
+void *hm__delete(hashmap *map, void *key);
 
 #endif
