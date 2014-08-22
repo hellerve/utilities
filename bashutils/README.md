@@ -11,7 +11,7 @@ What's included
 
 **erl_crashdump_analyzer**:
 
-This one if from Fred H., the famous author of "Learn you some Erlang
+This one if from Fred Hebert, the famous author of "Learn you some Erlang
 for great good", a very good resource for beginner erlangers. It analyzes
 the logfile a dying BEAM left behind and collects info about its state at 
 the moment of dying. So you could easily call it a forensics tool for analyzing

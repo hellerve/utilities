@@ -5,7 +5,8 @@ This is easily the biggest subdirectory of this repo. Most
 of the files are from Zed Shaws' wonderful "Learn C The Hard Way",
 which is the best resource to learn C from scratch at the moment I think.
 
-There are also a few files from a Threading book called (look it up).
+There are also a few files from a Threading book called "The Art of Concurrency
+by Clay Breshears.
 
 Finally, the file `Debug/benchmark.h` I copied from a StackOverflow answer
 I cannot seem to find anymore.

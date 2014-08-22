@@ -19,7 +19,7 @@ from talks I heard or code I read.
 
 All you need to make python a typechecking language that can import XML(by generating
 class code from it). Do not use it. It's terrible, but way cool. It is from a three-hour
-talk by (find out source).
+talk by David Beazley found [here](http://www.youtube.com/watch?v=sPiWg5jSoZI).
 
 **keywords**:
 
