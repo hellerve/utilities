@@ -15,7 +15,36 @@ What's included
 ---------------
 
 **Directory: ConcurrentStuff**
-Coming soon.
+
+**Concurrent Barriers/pth_barrier:**
+
+This implements a simple barrier for threading.
+
+**Directory: Concurrent Sorts**
+
+**OmpOddEvenSort:**
+
+This implements Odd-Even-Sort based on the implicit Open Message Passing
+framework.
+
+**OmpShellSort:**
+
+This implements Shellsort based on the implicit Open Message Passing framework.
+
+**WinBubSort:**
+
+This implements Bubble Sort based on Windows Threads.
+
+**Directory: MapReduce**
+
+**FriendlyNumsMapReduce:**
+
+This implements a search algorithm for friendly numbers based on the implicit
+Open Message Passing framework.
+
+**MapReduceSum:**
+
+This implements summation of an array using MapReduce based on pthread.
 
 **Directory: Debug**
 
@@ -32,6 +61,6 @@ to use it.
 
 **Directory: Hashmap**
 
-**hashmap**:
+**hashmap:**
 
 This implements a simple hashmap.
