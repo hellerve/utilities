@@ -14,6 +14,11 @@ I cannot seem to find anymore.
 What's included
 ---------------
 
+**filestat**:
+
+This implements a small utility that gets basic informations for a file.
+Please note that it will only work on unix systems.
+
 **Directory: ConcurrentStuff**
 
 **Concurrent Barriers/pth_barrier:**
