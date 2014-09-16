@@ -11,7 +11,7 @@ static inline void usage(){
 }
 
 static inline void die(int code, char* message){
-    fprintf(stderr, message);
+    fprintf(stderr, "%s\n", message);
     exit(code);
 }
 

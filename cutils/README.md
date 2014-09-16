@@ -19,6 +19,12 @@ What's included
 This implements a small utility that gets basic informations for a file.
 Please note that it will only work on unix systems.
 
+**find_usb**:
+
+This implements a small utility that gets information on all USB devices that
+are plugged in. It is Linux-based, you can compile it by passing the '-lusb' 
+argument to the compiler(example:`gcc find_usb.c -lusb -o find_usb`).
+
 **Directory: ConcurrentStuff**
 
 **Concurrent Barriers/pth_barrier:**
