@@ -11,6 +11,10 @@ by Clay Breshears.
 Finally, the file `Debug/benchmark.h` I copied from a StackOverflow answer
 I cannot seem to find anymore.
 
+Please note that even if it is called cutils, there are also C++ files in this
+repo. This is due to the fact that some of the files belong to each other, also
+the name cpputils does not roll of the tongue as easily.
+
 What's included
 ---------------
 
