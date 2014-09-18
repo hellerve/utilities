@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include <sys/poll.h>
@@ -13,7 +14,7 @@
 #define UPNP_ADDR "239.255.255.250"
 #define UPNP_PORT 1900
 
-static inline void die(int code,  int sock_fd, const char* message){
+static inline void die_close(int code,  int sock_fd, const char* message){
     fprintf(stderr, "%s\n", message);
     if(sock_fd > -1)
         close(sock_fd);
@@ -31,7 +32,7 @@ int main(){
     if(sock_fd == -1)
         die_close(127, -1, "upnp_search: Cannot create new socket");
 
-    server_addr.sind_family = AF_INET;
+    server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(UPNP_PORT);
     inet_aton(UPNP_ADDR, &(server_addr.sin_addr));
 
@@ -45,7 +46,7 @@ int main(){
 
     length = sendto(sock_fd, buffer, strlen(buffer), 0, 
                     (struct sockaddr *) &server_addr,
-                    sizeof struct sockaddr);
+                    sizeof(struct sockaddr));
 
     if(length != strlen(buffer))
         die_close(127, sock_fd, "upnp_search: sendto() failed");
@@ -53,17 +54,17 @@ int main(){
     pollfd.fd = sock_fd;
     pollfd.events = POLLIN | POLLPRI;
     i = 0;
-    while(i){
-        err = poll(&pollfd. 1. TIMEOUT);
+    while(1){
+        err = poll(&pollfd, 1, TIMEOUT);
         if(err < 0)
-            die_close(127, socke_fd, "upnp_search(): poll() failed");
+            die_close(127, sock_fd, "upnp_search(): poll() failed");
         else if(err == 0){
             if(i == 0)
                 printf("<No response received.>\n");
             break;
         }
         else{
-            addr_size = sizeof struct sockaddr_in;
+            addr_size = sizeof(struct sockaddr_in);
             length = recvfrom(sock_fd, buffer, BUF_SIZE-1, 0,
                     (struct sockaddr *)&from_addr,
                     &addr_size);
@@ -73,7 +74,7 @@ int main(){
             else{
                 buffer[length] = '\0';
                 printf("\33[1m---- Response from %s: ----\33[0m\n%s\n",
-                    inet_ntoa(from_addr.sind_addr), buffer);
+                    inet_ntoa(from_addr.sin_addr), buffer);
             }
             i = 1;
         }
