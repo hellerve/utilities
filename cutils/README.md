@@ -29,6 +29,12 @@ This implements a small utility that gets information on all USB devices that
 are plugged in. It is Linux-based, you can compile it by passing the '-lusb' 
 argument to the compiler(example:`gcc find_usb.c -lusb -o find_usb`).
 
+**upnp_search**:
+
+This implements a small utility that searches for information on UPNP devices
+on the local network. Essentially, it just sends a packet to a multicast address
+and returns the answer.
+
 **Directory: ConcurrentStuff**
 
 **Concurrent Barriers/pth_barrier:**
