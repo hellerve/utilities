@@ -20,7 +20,7 @@ int main(){
     usb_find_busses();
     usb_find_devices();
 
-    bus = ubs_get_busses();
+    bus = usb_get_busses();
 
     while(bus != NULL){
         printf("%d. Universial Serial Bus:\n", i++);
