@@ -29,6 +29,11 @@ This implements a small utility that gets information on all USB devices that
 are plugged in. It is Linux-based, you can compile it by passing the '-lusb' 
 argument to the compiler(example:`gcc find_usb.c -lusb -o find_usb`).
 
+**find_pport**:
+
+This implements a small utility that finds the I/O base address of the parallel 
+port so that you can work with it.
+
 **upnp_search**:
 
 This implements a small utility that searches for information on UPNP devices
