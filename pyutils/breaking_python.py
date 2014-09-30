@@ -7,11 +7,12 @@ from inspect import Parameter, Signature
 from collections import OrderedDict
 from xml.etree.ElementTree import parse
 
+
 def make_signature(names):
     """Generates signatures for a bunch of variables."""
-    return Signature(
-            Parameter(name, Parameter.POSITIONAL_OR_KEYWORD)
-            for name in names)
+    return Signature(Parameter(name, Parameter.POSITIONAL_OR_KEYWORD)
+                     for name in names)
+
 
 def _make_init(fields):
     """Code generator for an init function."""
@@ -19,6 +20,7 @@ def _make_init(fields):
     for name in fields:
         code += '   self.%s = %s\n' % (name, name)
     return code
+
 
 def _xml_to_code(filename):
     """Code generator for an XML tree."""
@@ -28,6 +30,7 @@ def _xml_to_code(filename):
         code += _xml_field_code(field)
     return code
 
+
 def _xml_field_code(field):
     """Code generator for an XML element."""
     name = field.get('name')
@@ -35,10 +38,11 @@ def _xml_field_code(field):
     for element in field.findall('element'):
         dtype = element.get('type')
         options = ['%s = %s' % (key, val) for key, val in element.items()
-                if key != 'type']
+                   if key != 'type']
         name = element.text.strip()
         code += '    %s = %s(%s)\n' % (name, dtype, ','.join(options))
     return code
+
 
 def _make_setter(dcls):
     """Code generator for setter functions."""
@@ -49,8 +53,10 @@ def _make_setter(dcls):
                 code += '    ' + line + '\n'
     return code
 
+
 def _install_importer():
     sys.meta_path.append(Finder())
+
 
 class Finder:
     """Custom module finder for xml files."""
@@ -60,6 +66,7 @@ class Finder:
             filename = os.path.join(dirname, fullname + '.xml')
             if os.path.exists(filename):
                 return StructXMLLoader(filename)
+
 
 class StructXMLLoader:
     def __init__(self, filename):
@@ -77,6 +84,7 @@ class StructXMLLoader:
         exec(code, mod.__dict__, mod.__dict__)
         return mod
 
+
 class DescriptorMeta(type):
     """Meta class that implements the magic behind the descriptor class."""
     def __init__(self, clsname, bases, clsdict):
@@ -86,6 +94,7 @@ class DescriptorMeta(type):
         code = _make_setter(self)
         exec(code, globals(), clsdict)
         setattr(self, '__set__', clsdict['__set__'])
+
 
 class Descriptor(metaclass=DescriptorMeta):
     """Base class that implements custom set and delete functions."""
@@ -99,32 +108,40 @@ class Descriptor(metaclass=DescriptorMeta):
     def __delete__(self, instance):
         del instance.__dict__[self.name]
 
+
 class Typed(Descriptor):
     """Base class that implements static typing."""
     ty = object
+
     @staticmethod
     def set_code():
-        return [
-        'if not isinstance(value, self.ty):',
-        '   raise TypeError("Expected %s" % self.ty)']
+        return ['if not isinstance(value, self.ty):',
+                '   raise TypeError("Expected %s" % self.ty)']
+
 
 class Integer(Typed):
     ty = int
 
+
 class Float(Typed):
     ty = float
+
 
 class String(Typed):
     ty = str
 
+
 class Dictionary(Typed):
     ty = dict
+
 
 class Array(Typed):
     ty = list
 
+
 class Set(Typed):
     ty = set
+
 
 class Sized(Descriptor):
     def __init__(self, *args, maxlen, **kwargs):
@@ -133,12 +150,13 @@ class Sized(Descriptor):
 
     @staticmethod
     def set_code():
-        return [
-        'if len(value) > self.maxlen:',
-        '    raise ValueError("Must be >= %s" % self.maxlen)' ]
+        return ['if len(value) > self.maxlen:',
+                '    raise ValueError("Must be >= %s" % self.maxlen)']
+
 
 class SizedString(String, Sized):
     pass
+
 
 class Regex(Descriptor):
     def __init__(self, *args, pat, **kwargs):
@@ -147,12 +165,13 @@ class Regex(Descriptor):
 
     @staticmethod
     def set_code():
-        return [
-        'if not self.pat.match(value):'
-        '    raise ValueError("Invalid string")']
+        return ['if not self.pat.match(value):'
+                '    raise ValueError("Invalid string")']
+
 
 class SizedRegexString(SizedString, Regex):
     pass
+
 
 class FieldMeta(type):
     """
@@ -165,7 +184,7 @@ class FieldMeta(type):
 
     def __new__(cls, name, bases, clsdict):
         fields = [key for key, val in clsdict.items()
-                if isinstance(val, Descriptor)]
+                  if isinstance(val, Descriptor)]
         for name in fields:
             clsdict[name].name = name
 
@@ -175,6 +194,7 @@ class FieldMeta(type):
         sig = make_signature(clsobj._fields)
         setattr(clsobj, '__signature__', sig)
         return clsobj
+
 
 class Field(metaclass=FieldMeta):
     """

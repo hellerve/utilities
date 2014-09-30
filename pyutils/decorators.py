@@ -2,6 +2,7 @@ from datetime import datetime
 from functools import wraps, partial
 from contextlib import contextmanager
 
+
 def decordecor(decorator):
     """
     Decorator that can be used to turn simple functions
@@ -25,6 +26,7 @@ def decordecor(decorator):
     new_decorator.__dict__.update(decorator.__dict__)
     return new_decorator
 
+
 @decordecor
 def cache(func):
     """
@@ -32,6 +34,7 @@ def cache(func):
     for pure functions.
     """
     saved = {}
+
     @wraps(func)
     def wrapper(*args):
         if args in saved:
@@ -40,6 +43,7 @@ def cache(func):
         saved[args] = result
         return result
     return wrapper
+
 
 @contextmanager
 def break_on(*exceptions):
@@ -54,6 +58,7 @@ def break_on(*exceptions):
     except exceptions:
         pass
 
+
 @contextmanager
 def redirect_stdout(fileobj):
     """
@@ -67,6 +72,7 @@ def redirect_stdout(fileobj):
     finally:
         sys.stdout = oldstdout
 
+
 @decordecor
 def output_name(func=None, prefix=''):
     """
@@ -76,11 +82,13 @@ def output_name(func=None, prefix=''):
     if func is None:
         return partial(output_name, prefix=prefix)
     msg = prefix.join(func.__qualname__)
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         print(msg)
         return func(*args, **kwargs)
     return wrapper
+
 
 @decordecor
 def timefun(func):
@@ -91,6 +99,7 @@ def timefun(func):
         after = datetime.utcnow()
         print("{0} function took {1} seconds.".format(func, after - before))
     return new_func
+
 
 @decordecor
 def decorate_class(cls=None, func=output_name, args=None):
@@ -105,6 +114,7 @@ def decorate_class(cls=None, func=output_name, args=None):
             setattr(cls, key, func(val, *args))
     return cls
 
+
 class debugmeta(type):
     """
     Decorator that aplies the output_name decorator
@@ -114,7 +124,6 @@ class debugmeta(type):
     """
     def __new__(cls, clsname, bases, clsdict):
         clsobj = super().__new__(cls, clsname, bases, clsdict)
-        clsobj = decorate_cls(clsobj, func=output_name, args=clsname.join(": "))
+        clsobj = decorate_cls(clsobj, func=output_name,
+                              args=clsname.join(": "))
         return clsobj
-
-

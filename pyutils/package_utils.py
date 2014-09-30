@@ -4,12 +4,14 @@ __version__ = [0, 0, 0]
 __release__ = False                         # False for nightly
 __versionSub__ = "Alpha/Test"               # Short version description
 
+
 def getVersionDigitsStr():
     """
     String representation of the version number only (no additional info)
     Inspired by the Makehuman Project
     """
-    return ".".join( [str(v) for v in __version__] )
+    return ".".join([str(v) for v in __version__])
+
 
 def _versionStr():
     """
@@ -20,12 +22,14 @@ def _versionStr():
     else:
         return getVersionDigitsStr()
 
+
 def isRelease():
     """
     True when release version, False for nightly (dev) build
     Inspired by the Makehuman Project
     """
     return __release__
+
 
 def isBuild():
     """
@@ -36,12 +40,14 @@ def isBuild():
     """
     return getattr(sys, 'frozen', False)
 
+
 def getVersion():
     """
     Comparable version as list of ints
     Inspired by the Makehuman Project
     """
     return __version__
+
 
 def getVersionStr(verbose=True):
     """
@@ -52,12 +58,14 @@ def getVersionStr(verbose=True):
         return _versionStr()
     else:
         try:
-            result = _versionStr() + " (r%s %s)" % (os.environ['HGREVISION'], os.environ['HGNODEID'])
+            result = _versionStr() + " (r%s %s)" % (os.environ['HGREVISION'],
+                                                    os.environ['HGNODEID'])
             if verbose:
                 result += (" [%s]" % os.environ['HGREVISION_SOURCE'])
             return result
         except KeyError:
             print("HG lib does not seem to be installed.")
+
 
 def getShortVersion():
     """
@@ -68,4 +76,3 @@ def getShortVersion():
         return __versionSub__.replace(' ', '_').lower()
     else:
         return "v" + getVersionDigitsStr()
-
