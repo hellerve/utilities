@@ -127,3 +127,15 @@ class debugmeta(type):
         clsobj = decorate_cls(clsobj, func=output_name,
                               args=clsname.join(": "))
         return clsobj
+
+@decordecor
+def overrides(interface_class):
+    """
+    Decorator that enables you to make sure that the decorated
+    method is really overriding the base classes method you
+    want to override.
+    """
+    def overrider(method):
+        assert(method.__name__ in dir(interface_class))
+        return method
+    return overrider
