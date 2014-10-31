@@ -1,3 +1,4 @@
+import tempfile, shutil
 from datetime import datetime
 from functools import wraps, partial
 from contextlib import contextmanager
@@ -71,6 +72,14 @@ def redirect_stdout(fileobj):
         yield fieldobj
     finally:
         sys.stdout = oldstdout
+
+@contextmanagaer
+def tempdir():
+    outdir = tempfile.mkdtemp()
+    try:
+        yield outdir
+    finally:
+        shutil.rmtree(outdir)
 
 
 @decordecor
