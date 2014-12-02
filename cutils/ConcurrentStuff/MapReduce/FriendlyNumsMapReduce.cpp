@@ -37,8 +37,13 @@ void FriendlyNumbers(int start, int end){
     for(i = 0; i < last; i++){
         for(j = i + 1; j < last; j++){
             if((num[i] == num[j]) && (den[i] == den[j]))
-                printf("%d and %d are FRIENDLY", the_num[i], the_num[j]);
+                printf("%d and %d are FRIENDLY\n", the_num[i], the_num[j]);
         }
     }
     }
+}
+
+int main(void){
+    FriendlyNumbers(20, 100000);
+    return 0;
 }

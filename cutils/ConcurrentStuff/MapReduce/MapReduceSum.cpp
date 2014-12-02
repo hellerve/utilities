@@ -4,10 +4,10 @@
 #include "../ConcurrentBarriers/pth_barrier.h"
 
 #define NUM_THREADS 4
+#define N 400000
 
-int N;
-int *A;
-int gSum[NUM_THREADS];
+unsigned int *A;
+unsigned int gSum[NUM_THREADS];
 pth_barrier_t B;
 
 void *SumByReduction(void *pArg){
@@ -18,8 +18,9 @@ void *SumByReduction(void *pArg){
     start = ((float)N/NUM_THREADS) * tNum;
     end = ((float)N/NUM_THREADS) * (tNum + 1);
     if(tNum == (NUM_THREADS-1)) end = N;
-    for(i = start; i < end; i++)
+    for(i = start; i < end; i++){
         lSum += A[i];
+    }
     gSum[tNum] = lSum;
 
     pth_barrier(&B);
@@ -33,20 +34,12 @@ void *SumByReduction(void *pArg){
     free(pArg);
 }
 
-//PoC Code
-void initializeArray(int* A, int N){
-    int i;
-    A = new int[N];
-    for(i = 0; i < N; i++)
-        A[i] = i;
-}
-
 int main(int argc, char* argv[]){
-    int j, sum = 0;
-    N = 400;
     pthread_t tHandles[NUM_THREADS];
 
-    initializeArray(A, N);
+    A = new unsigned int[N];
+    for(i = 0; i < N; i++)
+        A[i] = i;
     pth_barrier_init(&B, NUM_THREADS);
     for(j = 0; j < NUM_THREADS; j++){
         int *threadNum = new(int);
@@ -54,6 +47,6 @@ int main(int argc, char* argv[]){
         pthread_create(&tHandles[j], NULL, SumByReduction, (void *) threadNum);
     }
     pthread_join(tHandles[0], NULL);
-    printf("The sum of all elements is %d.\n", gSum[0]);
+    printf("The sum of all elements is %u.\n", gSum[0]);
     return 0;
 }
