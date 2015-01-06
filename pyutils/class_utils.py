@@ -21,11 +21,7 @@ class LookupOptimizingMetaclass(type):
        out repeated function lookups.'''
     def __init__(cls, name, bases, dict):
         super(OptimizingMetaclass, cls).__init__(name, bases, dict)
-
-        import types
-        for name, attribute in dict.items():
-            if type(attribute) is types.FunctionType:
-                dict[name] = _make_constants(attribute)
+        bind_all(cls)
 
 def build_optimizing_metaclass(builtin_only=False, stoplist=[], verbose=False):
     '''Factory function that builds a configurable optimizing metaclass.'''
