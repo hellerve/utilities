@@ -13,10 +13,10 @@ What's included
 Most languages I use on a regular basis have a subdirectory here. Languages
 I have a subdir for include:
 
-1. C/C++
-2. Python
-3. Javascript
-4. Erlang
-5. Bash
+1. C/C++ in *cutils*
+2. Python in *pyutils*
+3. Javascript in *jsutils*
+4. Erlang in *erlutils*
+5. Shell in *shutils*
 
 I am sure there are more to come.
