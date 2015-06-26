@@ -115,8 +115,7 @@ def timefun(func):
     return new_func
 
 
-@decordecor
-def decorate_class(cls=None, func=output_name, args=None):
+def decorate_class(cls=None, func=output_name, args=[]):
     """
     Decorater that decorates all the instance
     methods of a class with a specified function.
