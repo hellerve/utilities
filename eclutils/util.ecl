@@ -17,12 +17,12 @@ balance(P, W, BL, BU, D):-
 
   labeling(P).
 
-absSum(A, B) :- absSum(A, 0, B).
+absSum(A, B) :- absSum(A, B, 0).
 
 absSum([], Sum, Sum).
-absSum([H|T], X, Sum) :-
-  M #= X + abs(H),
-  absSum(T, M, Sum).
+absSum([H|T], Sum, Acc) :-
+  Nacc #= Acc + abs(H),
+  absSum(T, Sum, Nacc).
 
 test([A, B, C]) :-
   absSum([1, 2, 3], 6),
