@@ -35,3 +35,12 @@ fillwith(D, N, L, Acc) :-
   M is N - 1,
   append(Acc, [D], Nacc),
   fillwith(D, M, L, Nacc).
+
+delet(X, [X|L], L).
+delet(X, [Y|L], [Y|R]) :-
+  delet(X, L, R).
+
+permutation([],[]).
+permutation(L, [H|T]) :-
+  delet(H, L, L1),
+  permutation(L1,T).
