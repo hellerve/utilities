@@ -18,5 +18,6 @@ I have a subdir for include:
 3. Javascript in *jsutils*
 4. Erlang in *erlutils*
 5. Shell in *shutils*
+6. EclipseCSP flavoured Prolog in *eclutils*
 
 I am sure there are more to come.
